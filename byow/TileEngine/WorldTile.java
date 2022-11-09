@@ -14,4 +14,16 @@ public class WorldTile {
     public TETile getTETile() {
         return tile;
     }
+
+    public void makeFloor() {
+        tile = Tileset.FLOOR;
+    }
+
+    public void placeAvatar() {
+        tile = Tileset.AVATAR;
+    }
+
+    public void placeEndPath() {
+        tile = Tileset.FLOWER;
+    }
 }
