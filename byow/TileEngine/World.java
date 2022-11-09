@@ -53,6 +53,9 @@ public class World {
         int lastDirectionIndex = -1;
         while (stepsTaken < steps) {
             int[] xyDirectionAndLength = getRandomDirectionAndLength(x, y, lastDirectionIndex % 2, 0.75);
+            if (xyDirectionAndLength[3] == xyDirectionAndLength[4]) { // both 0
+                continue;
+            }
             lastDirectionIndex = xyDirectionAndLength[0];
             System.out.println(stepsTaken + ": Going direction " + lastDirectionIndex + " for " + Math.max(xyDirectionAndLength[3], xyDirectionAndLength[4]));
             for (int i = 0; i < xyDirectionAndLength[3]; i++) {
@@ -78,6 +81,8 @@ public class World {
     }
 
     private int[] getRandomDirectionAndLength(int x, int y, int forbiddenDirection, double factor) {
+        int maxX = width;
+        int maxY = height;
         //                   0:right   1:down   2:left    3:up
         int[][] directions = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
         int index = forbiddenDirection;
@@ -88,17 +93,17 @@ public class World {
 
         int xStepLength = 0;
         if (direction[0] == -1) {
-            xStepLength = random.nextInt(x + 1);
+            xStepLength = random.nextInt(Math.min(x + 1, maxX));
         } else if (direction[0] == 1) {
-            xStepLength = random.nextInt(width - x);
+            xStepLength = random.nextInt(Math.max(maxX - x, 1));
         }
         xStepLength = (int) Math.round(xStepLength * factor);
 
         int yStepLength = 0;
         if (direction[1] == -1) {
-            yStepLength = random.nextInt(y + 1);
+            yStepLength = random.nextInt(Math.min(y + 1, maxY));
         } else if (direction[1] == 1) {
-            yStepLength = random.nextInt(height - y);
+            yStepLength = random.nextInt(Math.max(maxY - y, 1));
         }
         yStepLength = (int) Math.round(yStepLength * factor);
         return new int[]{index, direction[0], direction[1], xStepLength, yStepLength};
