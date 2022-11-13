@@ -8,7 +8,7 @@ public class Main {
 
     private static final long DEFAULT_SEED = 2873123;
     private static final int WIDTH = 80;
-    private static final int HEIGHT = 44;
+    //private static final int HEIGHT = 44;
 
     private boolean gameOver;
 
