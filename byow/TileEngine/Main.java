@@ -9,6 +9,7 @@ public class Main {
     private static final long DEFAULT_SEED = 2873123;
     private static final int WIDTH = 80;
     private static final int HEIGHT = 45;
+
     private boolean gameOver;
 
     public static void main(String[] args) {
