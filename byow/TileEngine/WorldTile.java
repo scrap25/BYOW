@@ -28,7 +28,7 @@ public class WorldTile {
     }
 
     public void makeRoom() {
-        tile = Tileset.SAND;
+        tile = Tileset.ROOM;
     }
 
     public int getX() {
@@ -41,5 +41,9 @@ public class WorldTile {
 
     public boolean isFloor() {
         return tile.equals(Tileset.FLOOR);
+    }
+
+    public boolean isRoom() {
+        return tile.equals(Tileset.ROOM);
     }
 }

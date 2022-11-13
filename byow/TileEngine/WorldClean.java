@@ -29,40 +29,82 @@ public class WorldClean {
         this.ter = ter;
 
         // Make 4 paths each starting from center going toward the 4 quadrants
-        int stepsPerQuad = 40;
+        int stepsPerQuad = 50;
+        int minStepLength = 3;
+        int maxStepLength = 7;
         PathParams quad1 = new PathParams(
                 stepsPerQuad,
-                3, 7,
+                minStepLength, maxStepLength,
                 Math.round(width/2), Math.round(height/2),
-                Math.round(width/2), width - 1,
-                Math.round(height/2), height - 1
+                Math.round(width/2), width - 2,
+                Math.round(height/2), height - 2
         );
         PathParams quad2 = new PathParams(
                 stepsPerQuad,
-                3, 7,
+                minStepLength, maxStepLength,
                 Math.round(width/2), Math.round(height/2),
-                0, Math.round(width/2),
-                Math.round(height/2), height - 1
+                1, Math.round(width/2),
+                Math.round(height/2), height - 2
         );
         PathParams quad3 = new PathParams(
                 stepsPerQuad,
-                3, 7,
+                minStepLength, maxStepLength,
                 Math.round(width/2), Math.round(height/2),
-                0, Math.round(width/2),
-                0, Math.round(height/2)
+                1, Math.round(width/2),
+                1, Math.round(height/2)
         );
         PathParams quad4 = new PathParams(
                 stepsPerQuad,
-                3, 7,
+                minStepLength, maxStepLength,
                 Math.round(width/2), Math.round(height/2),
-                Math.round(width/2), width - 1,
-                0, Math.round(height/2)
+                Math.round(width/2), width - 2,
+                1, Math.round(height/2)
         );
-        int delay = 50;
+        int delay = 0;
         Path path1 = generatePathOnWorld(quad1, delay);
         Path path2 = generatePathOnWorld(quad2, delay);
         Path path3 = generatePathOnWorld(quad3, delay);
         Path path4 = generatePathOnWorld(quad4, delay);
+
+        generateRooms(70, 3, 7, true);
+    }
+
+    private ArrayList<Room> generateRooms(int numRooms, int minLength, int maxLength, boolean prune)  {
+        ArrayList<Room> newRooms = new ArrayList<>();
+        for (int i = 0; i < numRooms; i++) {
+            int randRoomWidth = random.nextInt(minLength, maxLength);
+            int randRoomHeight = random.nextInt(minLength, maxLength);
+
+            int randRoomX = random.nextInt(1, width - randRoomWidth - 1);
+            int randRoomY = random.nextInt(1, height - randRoomHeight - 1);
+
+            boolean connected = false;
+            boolean overlapping = false;
+            for (int x = randRoomX; x < randRoomX + randRoomWidth; x++) {
+                if (connected) {
+                    break;
+                }
+                for (int y = randRoomY; y < randRoomY + randRoomHeight; y++) {
+                    if (world[x][y].isRoom()) {
+                        overlapping = true;
+                    }
+                    if (world[x][y].isFloor()) {
+                        connected = true;
+                        break;
+                    }
+                }
+            }
+            if (!connected || overlapping) {
+//                i--; // Don't count the failed room placement
+                continue;
+            }
+            for (int x = randRoomX; x < randRoomX + randRoomWidth; x++) {
+                for (int y = randRoomY; y < randRoomY + randRoomHeight; y++) {
+                    world[x][y].makeRoom();
+                }
+            }
+        }
+        return newRooms;
     }
 
     private Path generatePathOnWorld(PathParams pathParams, int delayMillis) {
