@@ -38,4 +38,8 @@ public class WorldTile {
     public int getY() {
         return y;
     }
+
+    public boolean isFloor() {
+        return tile.equals(Tileset.FLOOR);
+    }
 }
