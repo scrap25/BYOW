@@ -5,13 +5,14 @@ import java.util.ArrayList;
 public class Path {
     private ArrayList<WorldTile> path;
     private WorldTile head;
-
+    private PathParams params;
     private int walkIndex;
 
-    public Path() {
+    public Path(PathParams params) {
         path = new ArrayList<>();
         head = null;
         walkIndex = -1;
+        this.params = params;
     }
 
     public void add(WorldTile worldTile) {
@@ -38,5 +39,13 @@ public class Path {
 
     private void incrementWalkIndex() {
         walkIndex++;
+    }
+
+    public WorldTile getHead() {
+        return head;
+    }
+
+    public PathParams getParams() {
+        return params;
     }
 }

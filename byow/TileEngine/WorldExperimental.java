@@ -19,7 +19,7 @@ public class WorldExperimental {
         this.height = height;
         world = generateEmptyWorld(width, height);
         paths = generatePaths(0);
-//        rooms = generateRooms(15);
+        rooms = generateRooms(2);
     }
 
     private ArrayList<Path> generatePaths(int delay) {
@@ -37,8 +37,8 @@ public class WorldExperimental {
     private ArrayList<Room> generateRooms(int numRooms)  {
         ArrayList<Room> newRooms = new ArrayList<>();
         for (int i = 0; i < numRooms; i++) {
-            int randRoomWidth = random.nextInt(3, 6);
-            int randRoomHeight = random.nextInt(3, 6);
+            int randRoomWidth = random.nextInt(5, 9);
+            int randRoomHeight = random.nextInt(5, 9);
 
             int randRoomX = random.nextInt(0, width - randRoomWidth);
             int randRoomY = random.nextInt(0, height - randRoomHeight);
@@ -74,7 +74,7 @@ public class WorldExperimental {
 
     private Path generatePath(int startX, int startY, int delay) {
         int steps = 20;
-        Path newPath = new Path();
+        Path newPath = new Path(null);
         int x = startX;//Math.round(width / 2);//random.nextInt(width);
         int y = startY; //Math.round(height / 2);//random.nextInt(height);
         System.out.println("Starting at (" + x + ", " + y + ")");

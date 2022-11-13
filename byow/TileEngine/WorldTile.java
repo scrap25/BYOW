@@ -30,4 +30,12 @@ public class WorldTile {
     public void makeRoom() {
         tile = Tileset.SAND;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }
