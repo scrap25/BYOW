@@ -16,6 +16,7 @@ public class World {
     private ArrayList<Path> paths;
     private ArrayList<Room> rooms;
 
+    private Player player;
     // For seeing drawing slowly during development
     private TERenderer ter;
 
@@ -316,4 +317,18 @@ public class World {
         }
     }
 
+    public void addPlayer() {
+        boolean placedPlayer = false;
+        while (!placedPlayer) {
+            int randX = random.nextInt(0, width);
+            int randY = random.nextInt(0, height);
+            if (world[randX][randY].isFloor()) {
+                player = new Player(randX, randY);
+                player.sittingOn(world[randX][randY].getTETile());
+                world[randX][randY].makePlayer();
+
+                placedPlayer = true;
+            }
+        }
+    }
 }

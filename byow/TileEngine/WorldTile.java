@@ -62,4 +62,8 @@ public class WorldTile {
     public void makeFlower() {
         tile = Tileset.FLOWER;
     }
+
+    public void makePlayer() {
+        tile = Tileset.PLAYER;
+    }
 }

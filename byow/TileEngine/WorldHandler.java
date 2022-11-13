@@ -11,30 +11,34 @@ public class WorldHandler {
         this(width, height, -1);
     }
 
-    public WorldHandler(int width, int height, int seed) {
+    public WorldHandler(int width, int height, long seed) {
         this.width = width;
         this.height = height;
         TERenderer ter = new TERenderer();
         ter.initialize(width, height);
         this.ter = ter;
         if (seed != -1) {
-            this.world = generateAndRenderWorld(seed);
+            generateWorld(seed);
         }
     }
 
-    private World generateAndRenderWorld(int seed) {
-        World world = new World(seed, this.width, this.height, this.ter);
+    private void generateWorld(long seed) {
+        world = new World(seed, this.width, this.height, this.ter);
+    }
+    public void renderWorld() {
         TETile[][] teTiles = world.getAsTETiles();
-
         ter.renderFrame(teTiles);
-        return world;
     }
 
+    public void addPlayer() {
+        world.addPlayer();
+    }
     public static void main(String[] args) {
         WorldHandler worldHandler = new WorldHandler(80, 44);
 
         for (int seed = 0; seed < 5000; seed++) {
-            worldHandler.generateAndRenderWorld(seed);
+            worldHandler.generateWorld(seed);
+            worldHandler.renderWorld();
             try {
                 Thread.sleep(4000);
             } catch (InterruptedException e) {

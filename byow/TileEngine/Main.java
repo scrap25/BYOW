@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
         main.setupFrame();
-        main.startGame();
+        main.startGameLoop();
     }
 
     private void setupFrame() {
@@ -26,20 +26,21 @@ public class Main {
         StdDraw.enableDoubleBuffering();
     }
 
-    public void startGame() {
-        drawText("Enter seed:");
+    public void startGameLoop() {
+        Long seed = 2324l;
+        if (seed == null) {
+            drawText("Enter seed:");
 
-        Long seed = readSeed();
-        System.out.println("Seed: " + seed);
+            seed = readSeed();
+            System.out.println("Seed: " + seed);
 
-        StdDraw.pause(1000);
+            drawText("... Generating world with seed: " + seed + " ...");
 
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-        World world = new World(seed, WIDTH, HEIGHT, ter);
-        TETile[][] teTiles = world.getAsTETiles();
-
-        ter.renderFrame(teTiles);
+            StdDraw.pause(1000);
+        }
+        WorldHandler worldHandler = new WorldHandler(WIDTH, HEIGHT, seed);
+        worldHandler.addPlayer();
+        worldHandler.renderWorld();
 
         StdDraw.pause(5000);
     }
