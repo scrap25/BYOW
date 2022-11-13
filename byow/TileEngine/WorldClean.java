@@ -28,6 +28,39 @@ public class WorldClean {
 
         this.ter = ter;
 
+        createPathsAndRooms();
+        addWalls();
+    }
+
+    private void addWalls() {
+        for (int x = 0; x < world.length; x++) {
+            for (int y = 0; y < world[x].length; y++) {
+                WorldTile tile = world[x][y];
+                if (!tile.isEmpty() && !tile.isWall()) {
+                    convertNeighborsToWall(x, y);
+                }
+            }
+        }
+    }
+
+    private void convertNeighborsToWall(int midX, int midY) {
+        for (int x = midX - 1; x <= midX + 1; x++) {
+            for (int y = midY - 1; y <= midY + 1; y++) {
+                if (x == midX && y == midY) {
+                    continue;
+                }
+                try {
+                    if (world[x][y].isEmpty()) {
+                        world[x][y].makeWall();
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    // TODO: Fix this lazy way of handling edge cases.
+                }
+            }
+        }
+    }
+
+    private void createPathsAndRooms() {
         // Make 4 paths each starting from center going toward the 4 quadrants
         int stepsPerQuad = 50;
         int minStepLength = 3;
@@ -117,20 +150,31 @@ public class WorldClean {
         int maxNumSteps = pathParams.getMaxNumSteps();
         int minStepLength = pathParams.getMinStepLength();
         int maxStepLength = pathParams.getMaxStepLength();
+        int failed = 0;
         for (int i = 0; i < maxNumSteps; i++) {
+            if (failed > 30) {
+//                world[path.getHead().getX()][path.getHead().getY()].makeFlower();
+                path.moveHead(random);
+                failed = 0;
+                i--; // Don't count this ultra stuck spot
+                continue;
+            }
             int randDirection = random.nextInt(4);
             int randStepLength = random.nextInt(minStepLength, maxStepLength);
             if (!stepInBounds(path, randDirection, randStepLength)) {
                 i--; // Ignore this attempt and try again
+                failed++;
 //                System.out.println("Out of bounds step of length " + randStepLength + " in direction " + randDirection);
                 continue;
             }
             if (!validStep(path, randDirection, randStepLength)) {
                 i--; // Ignore this attempt and try again
+                failed++;
 //                System.out.println("Invalid step of length " + randStepLength + " in direction " + randDirection);
                 continue;
             }
             takeStep(path, randDirection, randStepLength);
+            failed = 0;
             if (delayMillis > 0) {
                 drawAndPause(delayMillis);
             }

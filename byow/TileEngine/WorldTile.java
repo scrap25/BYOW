@@ -46,4 +46,20 @@ public class WorldTile {
     public boolean isRoom() {
         return tile.equals(Tileset.ROOM);
     }
+
+    public boolean isWall() {
+        return tile.equals(Tileset.WALL);
+    }
+
+    public boolean isEmpty() {
+        return tile.equals(Tileset.NOTHING);
+    }
+
+    public void makeWall() {
+        tile = Tileset.WALL;
+    }
+
+    public void makeFlower() {
+        tile = Tileset.FLOWER;
+    }
 }

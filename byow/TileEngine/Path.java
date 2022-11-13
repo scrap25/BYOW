@@ -1,6 +1,7 @@
 package byow.TileEngine;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Path {
     private ArrayList<WorldTile> path;
@@ -47,5 +48,9 @@ public class Path {
 
     public PathParams getParams() {
         return params;
+    }
+
+    public void moveHead(Random random) {
+        head = path.get(random.nextInt(path.size()));
     }
 }
