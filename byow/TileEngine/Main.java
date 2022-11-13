@@ -1,6 +1,6 @@
 package byow.TileEngine;
 
-import edu.princeton.cs.introcs.StdDraw;
+import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.*;
 
@@ -44,28 +44,19 @@ public class Main {
         worldHandler.addPlayer();
         worldHandler.renderWorld();
 
-        while (true) {
-            if (StdDraw.hasNextKeyTyped()) {
-                System.out.println("HAS NEXT KEY!!! YAY!");
-            }
+        gameOver = false;
+        while (!gameOver) {
+            String direction = readDirection();
+            worldHandler.movePlayer(direction);
+            worldHandler.renderWorld();
         }
-
-        // Uncomment for direction logic
-//        gameOver = false;
-//        while (!gameOver) {
-//            String direction = readDirection();
-//            System.out.println("Direction: " + direction);
-//            worldHandler.movePlayer(direction);
-//        }
-//        StdDraw.pause(5000);
+        StdDraw.pause(5000);
     }
 
     private String readDirection() {
         while (true) {
             if(StdDraw.hasNextKeyTyped()){
-                System.out.println("hasNextKeyTyped!");
                 char curr = StdDraw.nextKeyTyped();
-                System.out.println(curr);
                 if ("wasdWASD".contains(""+curr)) {
                     return ("" + curr).toLowerCase();
                 }

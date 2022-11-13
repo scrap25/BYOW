@@ -335,34 +335,30 @@ public class World {
     public void movePlayer(String direction) {
         int x = player.getX();
         int y = player.getY();
-        WorldTile currentTile = world[x][y];
+        int newX = x;
+        int newY = y;
         boolean inBounds = false;
-        switch (direction) {
-            case "d":
-                x++;
-                inBounds = x <= width - 1;
-                break;
-            case "s":
-                y--;
-                inBounds = y >= 0;
-                break;
-            case "a":
-                x--;
-                inBounds = x >= 0;
-                break;
-            case "w":
-                y++;
-                inBounds = y <= height - 1;
-                break;
-            default:
-                throw new RuntimeException("Invalid direction.");
+        if ("d".equals(direction)) {
+            newX = x + 1;
+            inBounds = newX <= width - 1;
+        } else if ("s".equals(direction)) {
+            newY = y - 1;
+            inBounds = newY >= 0;
+        } else if ("a".equals(direction)) {
+            newX = x - 1;
+            inBounds = newX >= 0;
+        } else if ("w".equals(direction)) {
+            newY = y + 1;
+            inBounds = newY <= height - 1;
+        } else {
+            throw new RuntimeException("Invalid direction.");
         }
-        if (!inBounds || world[x][y].isWall()) {
+        if (!inBounds || world[newX][newY].isWall()) {
             return;
         }
-        currentTile.setTile(player.getSittingOn());
-        player.setXY(x, y);
-        player.setSittingOn(world[x][y].getTETile());
-        world[x][y].makePlayer();
+        world[x][y].setTile(player.getSittingOn());
+        player.setXY(newX, newY);
+        player.setSittingOn(world[newX][newY].getTETile());
+        world[newX][newY].makePlayer();
     }
 }
