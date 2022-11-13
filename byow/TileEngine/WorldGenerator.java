@@ -1,7 +1,5 @@
 package byow.TileEngine;
 
-import java.util.Random;
-
 public class WorldGenerator {
     private static final long DEFAULT_SEED = 2873123;
     private static final int WIDTH = 44;
@@ -11,7 +9,7 @@ public class WorldGenerator {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
 
-        World world = new World(DEFAULT_SEED, WIDTH, HEIGHT, ter);
+        WorldClean world = new WorldClean(DEFAULT_SEED, WIDTH, HEIGHT, ter);
         TETile[][] teTiles = world.getAsTETiles();
 
         ter.renderFrame(teTiles);

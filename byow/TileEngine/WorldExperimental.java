@@ -3,7 +3,7 @@ package byow.TileEngine;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class World {
+public class WorldExperimental {
 
     private final Random random;
     private WorldTile[][] world;
@@ -12,7 +12,7 @@ public class World {
     private ArrayList<Room> rooms;
     private TERenderer ter;
 
-    public World(long seed, int width, int height, TERenderer ter) {
+    public WorldExperimental(long seed, int width, int height, TERenderer ter) {
         this.ter = ter;
         random = new Random(seed);
         this.width = width;
