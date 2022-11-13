@@ -26,4 +26,8 @@ public class WorldTile {
     public void placeEndPath() {
         tile = Tileset.FLOWER;
     }
+
+    public void makeRoom() {
+        tile = Tileset.SAND;
+    }
 }
