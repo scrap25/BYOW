@@ -61,22 +61,25 @@ public class WorldClean {
                 1, Math.round(height/2)
         );
         int delay = 0;
-        Path path1 = generatePathOnWorld(quad1, delay);
-        Path path2 = generatePathOnWorld(quad2, delay);
-        Path path3 = generatePathOnWorld(quad3, delay);
-        Path path4 = generatePathOnWorld(quad4, delay);
-
-        generateRooms(70, 3, 7, true);
+        PathParams[] quads = {quad1, quad2, quad3, quad4};
+        for (int i = 0; i < quads.length; i++) {
+            PathParams quad = quads[i];
+            Path path = generatePathOnWorld(quad, delay);
+            generateRoomsInRange(random.nextInt(5, 9), 3, 7,
+                    quad.getMinX(), quad.getMaxX(),
+                    quad.getMinY(), quad.getMaxY(), true);
+        }
     }
 
-    private ArrayList<Room> generateRooms(int numRooms, int minLength, int maxLength, boolean prune)  {
+    private ArrayList<Room> generateRoomsInRange(int numRooms, int minLength, int maxLength,
+                                                 int minX, int maxX, int minY, int maxY, boolean prune)  {
         ArrayList<Room> newRooms = new ArrayList<>();
         for (int i = 0; i < numRooms; i++) {
             int randRoomWidth = random.nextInt(minLength, maxLength);
             int randRoomHeight = random.nextInt(minLength, maxLength);
 
-            int randRoomX = random.nextInt(1, width - randRoomWidth - 1);
-            int randRoomY = random.nextInt(1, height - randRoomHeight - 1);
+            int randRoomX = random.nextInt(minX, maxX + 1 - randRoomWidth);
+            int randRoomY = random.nextInt(minY, maxY + 1 - randRoomHeight);
 
             boolean connected = false;
             boolean overlapping = false;
@@ -94,8 +97,8 @@ public class WorldClean {
                     }
                 }
             }
-            if (!connected || overlapping) {
-//                i--; // Don't count the failed room placement
+            if (prune && (!connected || overlapping)) {
+                i--; // Don't count the failed room placement
                 continue;
             }
             for (int x = randRoomX; x < randRoomX + randRoomWidth; x++) {
