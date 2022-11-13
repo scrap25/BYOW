@@ -10,7 +10,24 @@ public class Player {
         y = randY;
     }
 
-    public void sittingOn(TETile teTile) {
+    public void setSittingOn(TETile teTile) {
         sittingOn = teTile;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public TETile getSittingOn() {
+        return sittingOn;
+    }
+
+    public void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }

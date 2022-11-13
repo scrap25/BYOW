@@ -46,4 +46,8 @@ public class WorldHandler {
             }
         }
     }
+
+    public void movePlayer(String direction) {
+        world.movePlayer(direction);
+    }
 }

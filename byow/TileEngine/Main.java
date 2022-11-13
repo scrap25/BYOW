@@ -10,6 +10,8 @@ public class Main {
     private static final int WIDTH = 80;
     private static final int HEIGHT = 44;
 
+    private boolean gameOver;
+
     public static void main(String[] args) {
         Main main = new Main();
         main.setupFrame();
@@ -27,7 +29,7 @@ public class Main {
     }
 
     public void startGameLoop() {
-        Long seed = 2324l;
+        Long seed = null;
         if (seed == null) {
             drawText("Enter seed:");
 
@@ -42,7 +44,33 @@ public class Main {
         worldHandler.addPlayer();
         worldHandler.renderWorld();
 
-        StdDraw.pause(5000);
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                System.out.println("HAS NEXT KEY!!! YAY!");
+            }
+        }
+
+        // Uncomment for direction logic
+//        gameOver = false;
+//        while (!gameOver) {
+//            String direction = readDirection();
+//            System.out.println("Direction: " + direction);
+//            worldHandler.movePlayer(direction);
+//        }
+//        StdDraw.pause(5000);
+    }
+
+    private String readDirection() {
+        while (true) {
+            if(StdDraw.hasNextKeyTyped()){
+                System.out.println("hasNextKeyTyped!");
+                char curr = StdDraw.nextKeyTyped();
+                System.out.println(curr);
+                if ("wasdWASD".contains(""+curr)) {
+                    return ("" + curr).toLowerCase();
+                }
+            }
+        }
     }
 
     public Long readSeed() {

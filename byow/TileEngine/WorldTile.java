@@ -66,4 +66,8 @@ public class WorldTile {
     public void makePlayer() {
         tile = Tileset.PLAYER;
     }
+
+    public void setTile(TETile tile) {
+        this.tile = tile;
+    }
 }

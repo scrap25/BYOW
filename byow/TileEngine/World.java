@@ -324,11 +324,45 @@ public class World {
             int randY = random.nextInt(0, height);
             if (world[randX][randY].isFloor()) {
                 player = new Player(randX, randY);
-                player.sittingOn(world[randX][randY].getTETile());
+                player.setSittingOn(world[randX][randY].getTETile());
                 world[randX][randY].makePlayer();
 
                 placedPlayer = true;
             }
         }
+    }
+
+    public void movePlayer(String direction) {
+        int x = player.getX();
+        int y = player.getY();
+        WorldTile currentTile = world[x][y];
+        boolean inBounds = false;
+        switch (direction) {
+            case "d":
+                x++;
+                inBounds = x <= width - 1;
+                break;
+            case "s":
+                y--;
+                inBounds = y >= 0;
+                break;
+            case "a":
+                x--;
+                inBounds = x >= 0;
+                break;
+            case "w":
+                y++;
+                inBounds = y <= height - 1;
+                break;
+            default:
+                throw new RuntimeException("Invalid direction.");
+        }
+        if (!inBounds || world[x][y].isWall()) {
+            return;
+        }
+        currentTile.setTile(player.getSittingOn());
+        player.setXY(x, y);
+        player.setSittingOn(world[x][y].getTETile());
+        world[x][y].makePlayer();
     }
 }
