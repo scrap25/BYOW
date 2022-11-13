@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class Main {
 
+    private static final long DEFAULT_SEED = 2873123;
     private static final int WIDTH = 80;
     private static final int HEIGHT = 44;
 
@@ -35,7 +36,7 @@ public class Main {
 
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
-        WorldClean world = new WorldClean(seed, WIDTH, HEIGHT, ter);
+        World world = new World(seed, WIDTH, HEIGHT, ter);
         TETile[][] teTiles = world.getAsTETiles();
 
         ter.renderFrame(teTiles);

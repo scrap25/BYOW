@@ -3,7 +3,7 @@ package byow.TileEngine;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class WorldClean {
+public class World {
     private final int RIGHT = 0;
     private final int DOWN = 1;
     private final int LEFT = 2;
@@ -19,7 +19,7 @@ public class WorldClean {
     // For seeing drawing slowly during development
     private TERenderer ter;
 
-    public WorldClean(long seed, int width, int height, TERenderer ter) {
+    public World(long seed, int width, int height, TERenderer ter) {
         random = new Random(seed);
 
         this.width = width;
