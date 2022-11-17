@@ -361,4 +361,8 @@ public class World {
         player.setSittingOn(world[newX][newY].getTETile());
         world[newX][newY].makePlayer();
     }
+
+    public String getTileDescAt(int x, int y) {
+        return world[x][y].getTETile().description();
+    }
 }

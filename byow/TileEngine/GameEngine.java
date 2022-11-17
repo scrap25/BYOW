@@ -40,24 +40,42 @@ public class GameEngine {
         if (render) {
             worldHandler.renderWorld();
             gameOver = false;
+            boolean worldChanged = false;
+            String tileDesc = "";
             while (!gameOver) {
+                // Check if user pressed a direction character
                 String direction = readDirection();
-                worldHandler.movePlayer(direction);
-                worldHandler.renderWorld();
+                if (!direction.isEmpty()) {
+                    worldHandler.movePlayer(direction);
+                    worldChanged = true;
+                }
+                // Update the Heads Up Display with whatever the mouse is hovering over
+                String newTileDesc = worldHandler.getTileDescAt((int) StdDraw.mouseX(), (int) StdDraw.mouseY());
+                if (!newTileDesc.equals(tileDesc)) {
+                    tileDesc = newTileDesc;
+                    System.out.println("tileDesc = " + tileDesc);
+                    worldChanged = true;
+                }
+                if (worldChanged) {
+                    System.out.println("World changed so rendering again.");
+                    worldHandler.renderWorld();
+                    StdDraw.pause(50);
+                    drawHeadsUpDisplay(tileDesc);
+                    worldChanged = false;
+                }
             }
             StdDraw.pause(5000);
         }
     }
 
     private String readDirection() {
-        while (true) {
-            if(StdDraw.hasNextKeyTyped()){
-                char curr = StdDraw.nextKeyTyped();
-                if ("wasdWASD".contains(""+curr)) {
-                    return ("" + curr).toLowerCase();
-                }
+        if(StdDraw.hasNextKeyTyped()){
+            char curr = StdDraw.nextKeyTyped();
+            if ("wasdWASD".contains(""+curr)) {
+                return ("" + curr).toLowerCase();
             }
         }
+        return "";
     }
 
     public Long readSeed() {
@@ -87,7 +105,15 @@ public class GameEngine {
 
         return Long.parseLong(seed);
     }
-    
+
+    public void drawHeadsUpDisplay(String text) {
+        StdDraw.setPenColor(Color.WHITE);//color of words
+        Font fontSmall = new Font("Monaco", Font.BOLD, 10);
+        StdDraw.setFont(fontSmall);
+        StdDraw.text(2, HEIGHT - 1, text);
+        StdDraw.show();
+    }
+
     public void drawText(String text) {
         StdDraw.clear(Color.BLACK);//background
         StdDraw.setPenColor(Color.WHITE);//color of words
@@ -108,7 +134,7 @@ public class GameEngine {
     public static void main(String[] args) {
         GameEngine gameEngine = new GameEngine();
         gameEngine.setupFrame();
-        gameEngine.startGameLoop(null, true);
+        gameEngine.startGameLoop(4456l, true);
     }
 
 
