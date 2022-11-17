@@ -1,19 +1,21 @@
 package byow.Core;
 
+import byow.TileEngine.GameEngine;
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 
 public class Engine {
-    TERenderer ter = new TERenderer();
-    /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
+
+    private GameEngine gameEngine;
 
     /**
      * Method used for exploring a fresh world. This method should handle all inputs,
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
+        gameEngine = new GameEngine();
+        gameEngine.setupFrame();
+        gameEngine.startGameLoop(null, true);
     }
 
     /**
@@ -38,15 +40,36 @@ public class Engine {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] interactWithInputString(String input) {
-        // TODO: Fill out this method so that it run the engine using the input
-        // passed in as an argument, and return a 2D tile representation of the
-        // world that would have been drawn if the same inputs had been given
-        // to interactWithKeyboard().
-        //
-        // See proj3.byow.InputDemo for a demo of how you can make a nice clean interface
-        // that works for many different input types.
+        boolean seedStarted = false;
+        String seedString = "";
+        boolean seedFinished = false;
+        int i;
+        for (i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (!seedStarted && (c == 'n' || c == 'N')) {
+                seedStarted = true;
+            } else if (seedStarted && Character.isDigit(c)) {
+                seedString += c;
+            } else if (c == 's' || c == 'S') {
+                seedFinished = true;
+               break;
+            }
+        }
+        if (seedFinished) {
+            long seed = Long.parseLong(seedString);
+            System.out.println("Using seed: " + seed);
 
-        TETile[][] finalWorldFrame = null;
-        return finalWorldFrame;
+            gameEngine = new GameEngine();
+            gameEngine.startGameLoop(seed, false);
+        }
+        if (gameEngine == null) {
+            return null;
+        }
+        return gameEngine.getWorldAsTETile();
+    }
+
+    @Override
+    public String toString() {
+        return gameEngine.getWorldAsString();
     }
 }

@@ -8,15 +8,17 @@ public class WorldHandler {
     private World world;
 
     public WorldHandler(int width, int height) {
-        this(width, height, -1);
+        this(width, height, -1, true);
     }
 
-    public WorldHandler(int width, int height, long seed) {
+    public WorldHandler(int width, int height, long seed, boolean render) {
         this.width = width;
         this.height = height;
-        TERenderer ter = new TERenderer();
-        ter.initialize(width, height);
-        this.ter = ter;
+        if (render) {
+            TERenderer ter = new TERenderer();
+            ter.initialize(width, height);
+            this.ter = ter;
+        }
         if (seed != -1) {
             generateWorld(seed);
         }
@@ -49,5 +51,24 @@ public class WorldHandler {
 
     public void movePlayer(String direction) {
         world.movePlayer(direction);
+    }
+
+    public TETile[][] getWorldAsTETile() {
+        return world.getAsTETiles();
+    }
+
+    public String toString() {
+        String worldAsString = "";
+        TETile[][] worldTiles = getWorldAsTETile();
+        for (int x = 0; x < worldTiles.length; x++) {
+            for (int y = worldTiles[x].length - 1; y >= 0; y--) {
+                char c = worldTiles[x][y].character();
+                if (c == ' ') {
+                    c = '0';
+                }
+                worldAsString += c;
+            }
+        }
+        return worldAsString;
     }
 }

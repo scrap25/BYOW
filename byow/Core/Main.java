@@ -1,5 +1,7 @@
 package byow.Core;
 
+import byow.TileEngine.TETile;
+
 /** This is the main entry point for the program. This class simply parses
  *  the command line inputs, and lets the byow.Core.Engine class take over
  *  in either keyboard or input string mode.
@@ -11,7 +13,8 @@ public class Main {
             System.exit(0);
         } else if (args.length == 2 && args[0].equals("-s")) {
             Engine engine = new Engine();
-            engine.interactWithInputString(args[1]);
+            TETile[][] worldAsTETile = engine.interactWithInputString(args[1]);
+            System.out.println(worldAsTETile.length + " by " + worldAsTETile[0].length + " size world.");
             System.out.println(engine.toString());
         } else {
             Engine engine = new Engine();

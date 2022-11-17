@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.*;
 
-public class Main {
+public class GameEngine {
 
     private static final long DEFAULT_SEED = 2873123;
     private static final int WIDTH = 80;
@@ -12,13 +12,9 @@ public class Main {
 
     private boolean gameOver;
 
-    public static void main(String[] args) {
-        Main main = new Main();
-        main.setupFrame();
-        main.startGameLoop();
-    }
+    private WorldHandler worldHandler;
 
-    private void setupFrame() {
+    public void setupFrame() {
         StdDraw.setCanvasSize(WIDTH * 16, HEIGHT * 16);//canvas size
         Font font = new Font("Monaco", Font.BOLD, 30);
         StdDraw.setFont(font);
@@ -28,8 +24,7 @@ public class Main {
         StdDraw.enableDoubleBuffering();
     }
 
-    public void startGameLoop() {
-        Long seed = null;
+    public void startGameLoop(Long seed, boolean render) {
         if (seed == null) {
             drawText("Enter seed:");
 
@@ -40,17 +35,18 @@ public class Main {
 
             StdDraw.pause(1000);
         }
-        WorldHandler worldHandler = new WorldHandler(WIDTH, HEIGHT, seed);
+        worldHandler = new WorldHandler(WIDTH, HEIGHT, seed, render);
         worldHandler.addPlayer();
-        worldHandler.renderWorld();
-
-        gameOver = false;
-        while (!gameOver) {
-            String direction = readDirection();
-            worldHandler.movePlayer(direction);
+        if (render) {
             worldHandler.renderWorld();
+            gameOver = false;
+            while (!gameOver) {
+                String direction = readDirection();
+                worldHandler.movePlayer(direction);
+                worldHandler.renderWorld();
+            }
+            StdDraw.pause(5000);
         }
-        StdDraw.pause(5000);
     }
 
     private String readDirection() {
@@ -101,5 +97,19 @@ public class Main {
         StdDraw.text(WIDTH / 2, HEIGHT / 2, text);
         StdDraw.show();
     }
-    
+
+    public TETile[][] getWorldAsTETile() {
+        return worldHandler.getWorldAsTETile();
+    }
+
+    public String getWorldAsString() {
+        return worldHandler.toString();
+    }
+    public static void main(String[] args) {
+        GameEngine gameEngine = new GameEngine();
+        gameEngine.setupFrame();
+        gameEngine.startGameLoop(null, true);
+    }
+
+
 }
