@@ -351,7 +351,7 @@ public class World {
             newY = y + 1;
             inBounds = newY <= height - 1;
         } else {
-            throw new RuntimeException("Invalid direction.");
+            throw new RuntimeException("Invalid direction " + direction);
         }
         if (!inBounds || world[newX][newY].isWall()) {
             return;
@@ -363,6 +363,9 @@ public class World {
     }
 
     public String getTileDescAt(int x, int y) {
+        if (x < 0 || x >= width || y < 0 || y >= height) {
+            return null;
+        }
         return world[x][y].getTETile().description();
     }
 }

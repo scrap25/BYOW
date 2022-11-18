@@ -4,7 +4,7 @@ public class WorldHandler {
     private int width;
     private int height;
     private TERenderer ter;
-
+    private boolean terInitialized;
     private World world;
 
     public WorldHandler(int width, int height) {
@@ -14,11 +14,8 @@ public class WorldHandler {
     public WorldHandler(int width, int height, long seed, boolean render) {
         this.width = width;
         this.height = height;
-        if (render) {
-            TERenderer ter = new TERenderer();
-            ter.initialize(width, height);
-            this.ter = ter;
-        }
+        this.ter = new TERenderer();
+        this.terInitialized = false;
         if (seed != -1) {
             generateWorld(seed);
         }
@@ -28,6 +25,10 @@ public class WorldHandler {
         world = new World(seed, this.width, this.height, this.ter);
     }
     public void renderWorld() {
+        if (!terInitialized) {
+            ter.initialize(width, height);
+            terInitialized = true;
+        }
         TETile[][] teTiles = world.getAsTETiles();
         ter.renderFrame(teTiles);
     }

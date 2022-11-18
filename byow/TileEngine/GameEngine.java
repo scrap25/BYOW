@@ -14,6 +14,8 @@ public class GameEngine {
 
     private WorldHandler worldHandler;
 
+    private GameLoader gameLoader;
+
     public void setupFrame() {
         StdDraw.setCanvasSize(WIDTH * 16, HEIGHT * 16);//canvas size
         Font font = new Font("Monaco", Font.BOLD, 30);
@@ -25,57 +27,112 @@ public class GameEngine {
     }
 
     public void startGameLoop(Long seed, boolean render) {
-        if (seed == null) {
-            drawText("Enter seed:");
+        gameLoader = new GameLoader();
+        char menuSelection = getMenuSelection();
+        switch (menuSelection) {
+            case 'L':
+                boolean hasPreviousGame = gameLoader.loadGameFromFile();
+                if (hasPreviousGame) {
+                    seed = gameLoader.getSeed();
+                    worldHandler = new WorldHandler(WIDTH, HEIGHT, seed, false);
+                    worldHandler.addPlayer();
+                    String previousKeyboardInputs = gameLoader.getKeyHistory();
+                    for (int i = 0; i < previousKeyboardInputs.length(); i++) {
+                        worldHandler.movePlayer("" + previousKeyboardInputs.charAt(i));
+                    }
+                    break;
+                }
+            case 'N':
+                if (seed == null) {
+                    drawText("Enter seed:");
 
-            seed = readSeed();
-            System.out.println("Seed: " + seed);
+                    seed = readSeed();
+                    System.out.println("Seed: " + seed);
 
-            drawText("... Generating world with seed: " + seed + " ...");
+                    drawText("... Generating world with seed: " + seed + " ...");
 
-            StdDraw.pause(1000);
+                    StdDraw.pause(1000);
+                }
+                gameLoader.clearSavedGame();
+                gameLoader.setSeed(seed);
+                worldHandler = new WorldHandler(WIDTH, HEIGHT, seed, render);
+                worldHandler.addPlayer();
+                break;
+            case 'Q':
+                break;
+            default:
+                throw new RuntimeException("Invalid menu option.");
         }
-        worldHandler = new WorldHandler(WIDTH, HEIGHT, seed, render);
-        worldHandler.addPlayer();
+
         if (render) {
             worldHandler.renderWorld();
             gameOver = false;
             boolean worldChanged = false;
             String tileDesc = "";
+            boolean readyToQuit = false;
             while (!gameOver) {
-                // Check if user pressed a direction character
-                String direction = readDirection();
-                if (!direction.isEmpty()) {
-                    worldHandler.movePlayer(direction);
+                Character c = readCharFromKeyboard();
+                if (c == null) {
+                    c = ' ';
+                }
+                String keyChar = "" + c;
+                if ("wasdWASD".contains(keyChar)) {
+                    worldHandler.movePlayer(keyChar);
                     worldChanged = true;
+                    readyToQuit = false;
+                    gameLoader.record(keyChar);
+                } else if (":".equals(keyChar)){
+                    readyToQuit = true;
+                } else if ("qQ".contains(keyChar)) {
+                    if (readyToQuit) {
+                        gameLoader.saveGame();
+                        // TODO: quit the canvas
+                        break;
+                    }
+                    readyToQuit = false;
                 }
                 // Update the Heads Up Display with whatever the mouse is hovering over
                 String newTileDesc = worldHandler.getTileDescAt((int) StdDraw.mouseX(), (int) StdDraw.mouseY());
-                if (!newTileDesc.equals(tileDesc)) {
+                if (newTileDesc != null && !newTileDesc.equals(tileDesc)) {
                     tileDesc = newTileDesc;
                     System.out.println("tileDesc = " + tileDesc);
                     worldChanged = true;
                 }
+
                 if (worldChanged) {
                     System.out.println("World changed so rendering again.");
                     worldHandler.renderWorld();
-                    StdDraw.pause(50);
+//                    StdDraw.pause(50);
                     drawHeadsUpDisplay(tileDesc);
                     worldChanged = false;
                 }
             }
-            StdDraw.pause(5000);
         }
     }
 
-    private String readDirection() {
-        if(StdDraw.hasNextKeyTyped()){
-            char curr = StdDraw.nextKeyTyped();
-            if ("wasdWASD".contains(""+curr)) {
-                return ("" + curr).toLowerCase();
+    private Character getMenuSelection() {
+        StdDraw.clear(Color.BLACK);//background
+        StdDraw.setPenColor(Color.WHITE);//color of words
+        Font fontBig = new Font("Monaco", Font.BOLD, 30);
+
+        StdDraw.setFont(fontBig);
+        StdDraw.text(WIDTH / 2, HEIGHT / 2, "Please choose menu option: ");
+        StdDraw.show();
+        Character c = null;
+        while (c == null) {
+            c = readCharFromKeyboard();
+            if ("NLQnlq".contains("" + c)) {
+                return Character.toUpperCase(c);
             }
         }
-        return "";
+        return null;
+    }
+
+    private Character readCharFromKeyboard() {
+        if (StdDraw.hasNextKeyTyped()){
+            return StdDraw.nextKeyTyped();
+        }
+        return null;
     }
 
     public Long readSeed() {
