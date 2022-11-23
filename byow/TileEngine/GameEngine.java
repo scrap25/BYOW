@@ -55,10 +55,11 @@ public class GameEngine {
                 }
                 gameLoader.clearSavedGame();
                 gameLoader.setSeed(seed);
-                worldHandler = new WorldHandler(WIDTH, HEIGHT, seed, render);
+                worldHandler = new WorldHandler(WIDTH, HEIGHT, seed, false);
                 worldHandler.addPlayer();
                 break;
             case 'Q':
+                System.exit(0);
                 break;
             default:
                 throw new RuntimeException("Invalid menu option.");
@@ -86,7 +87,7 @@ public class GameEngine {
                 } else if ("qQ".contains(keyChar)) {
                     if (readyToQuit) {
                         gameLoader.saveGame();
-                        // TODO: quit the canvas
+                        System.exit(0);
                         break;
                     }
                     readyToQuit = false;
@@ -116,7 +117,11 @@ public class GameEngine {
         Font fontBig = new Font("Monaco", Font.BOLD, 30);
 
         StdDraw.setFont(fontBig);
-        StdDraw.text(WIDTH / 2, HEIGHT / 2, "Please choose menu option: ");
+        StdDraw.text(WIDTH / 2, 4 * HEIGHT / 5, "Please choose menu option: ");
+        StdDraw.text(WIDTH / 2, 3 * HEIGHT / 5, "New Game (N)");
+        StdDraw.text(WIDTH / 2, 2 * HEIGHT / 5, "Load Game (L)");
+        StdDraw.text(WIDTH / 2, 1 * HEIGHT / 5, "Quit Game (Q)");
+
         StdDraw.show();
         Character c = null;
         while (c == null) {
@@ -124,6 +129,7 @@ public class GameEngine {
             if ("NLQnlq".contains("" + c)) {
                 return Character.toUpperCase(c);
             }
+            c = null;
         }
         return null;
     }
