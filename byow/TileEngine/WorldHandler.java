@@ -80,4 +80,8 @@ public class WorldHandler {
     public int getKeysCollected() {
         return world.getKeysCollected();
     }
+
+    public void toggleVisibility() {
+        world.toggleVisibility();
+    }
 }

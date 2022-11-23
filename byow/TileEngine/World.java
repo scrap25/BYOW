@@ -21,6 +21,7 @@ public class World {
     private Player player;
     // For seeing drawing slowly during development
     private TERenderer ter;
+    private boolean limitVisibility = true;
 
     public World(long seed, int width, int height, TERenderer ter) {
         random = new Random(seed);
@@ -315,11 +316,28 @@ public class World {
         TETile[][] teTileWorld = new TETile[width][height];
         for (int x = 0; x < teTileWorld.length; x++) {
             for (int y = 0; y < teTileWorld[x].length; y++) {
-                teTileWorld[x][y] = world[x][y].getTETile();
+                if (limitVisibility) {
+                    if (inVisibleRange(x, y)) {
+                        teTileWorld[x][y] = world[x][y].getTETile();
+                    } else {
+                        teTileWorld[x][y] = Tileset.NOTHING;
+                    }
+                } else {
+                    teTileWorld[x][y] = world[x][y].getTETile();
+                }
             }
         }
         return teTileWorld;
     }
+
+    private boolean inVisibleRange(int x, int y) {
+        int visibleRange = 2;
+        return x >= player.getX() - visibleRange &&
+                x <= player.getX() + visibleRange &&
+                y >= player.getY() - visibleRange &&
+                y <= player.getY() + visibleRange;
+    }
+
 
     private void drawAndPause(int delayMillis) {
         ter.renderFrame(getAsTETiles());
@@ -391,5 +409,9 @@ public class World {
 
     public int getKeysCollected() {
         return player.getNumKeysCollected();
+    }
+
+    public void toggleVisibility() {
+        limitVisibility = !limitVisibility;
     }
 }

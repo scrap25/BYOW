@@ -82,6 +82,9 @@ public class GameEngine {
                     worldChanged = true;
                     readyToQuit = false;
                     gameLoader.record(keyChar);
+                } else if ("tT".contains(keyChar)) {
+                    worldHandler.toggleVisibility();
+                    worldChanged = true;
                 } else if (":".equals(keyChar)){
                     readyToQuit = true;
                 } else if ("qQ".contains(keyChar)) {
