@@ -76,4 +76,8 @@ public class WorldHandler {
     public String getTileDescAt(int x, int y) {
         return world.getTileDescAt(x, y);
     }
+
+    public int getKeysCollected() {
+        return world.getKeysCollected();
+    }
 }

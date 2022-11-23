@@ -1,5 +1,7 @@
 package byow.TileEngine;
 
+import edu.princeton.cs.algs4.StdDraw;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -31,6 +33,19 @@ public class World {
 
         createPathsAndRooms();
         addWalls();
+        addKeys(random.nextInt(3, 8));
+    }
+
+    private void addKeys(int numKeys) {
+        while (numKeys > 0) {
+            int randX = random.nextInt(1, width - 1);
+            int randY = random.nextInt(1, height - 1);
+            WorldTile w = world[randX][randY];
+            if (w.isFloor()) {
+                w.makeKey();
+                numKeys--;
+            }
+        }
     }
 
     private void addWalls() {
@@ -356,7 +371,12 @@ public class World {
         if (!inBounds || world[newX][newY].isWall()) {
             return;
         }
-        world[x][y].setTile(player.getSittingOn());
+        TETile sittingOn = player.getSittingOn();
+        if (sittingOn == Tileset.KEY) {
+            player.keyCollected();
+            sittingOn = Tileset.FLOOR;
+        }
+        world[x][y].setTile(sittingOn);
         player.setXY(newX, newY);
         player.setSittingOn(world[newX][newY].getTETile());
         world[newX][newY].makePlayer();
@@ -367,5 +387,9 @@ public class World {
             return null;
         }
         return world[x][y].getTETile().description();
+    }
+
+    public int getKeysCollected() {
+        return player.getNumKeysCollected();
     }
 }

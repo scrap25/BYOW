@@ -70,4 +70,8 @@ public class WorldTile {
     public void setTile(TETile tile) {
         this.tile = tile;
     }
+
+    public void makeKey() {
+        tile = Tileset.KEY;
+    }
 }

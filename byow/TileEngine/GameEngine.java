@@ -104,7 +104,7 @@ public class GameEngine {
                     System.out.println("World changed so rendering again.");
                     worldHandler.renderWorld();
 //                    StdDraw.pause(50);
-                    drawHeadsUpDisplay(tileDesc);
+                    drawHeadsUpDisplay(tileDesc + "     Keys collected: " + worldHandler.getKeysCollected());
                     worldChanged = false;
                 }
             }
@@ -154,7 +154,7 @@ public class GameEngine {
                 if (!seedStarted && (curr == 'N' || curr == 'n')) {
                     seedStarted = true;
                     input += curr;
-                } else if (seed.length() > 0 && curr == 'S' || curr == 's') {
+                } else if (seed.length() > 0 && (curr == 'S' || curr == 's')) {
                     input += curr;
                     drawText(seed);
                     break;
@@ -173,7 +173,7 @@ public class GameEngine {
         StdDraw.setPenColor(Color.WHITE);//color of words
         Font fontSmall = new Font("Monaco", Font.BOLD, 10);
         StdDraw.setFont(fontSmall);
-        StdDraw.text(2, HEIGHT - 1, text);
+        StdDraw.text(10, HEIGHT - 1, text);
         StdDraw.show();
     }
 

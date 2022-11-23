@@ -3,6 +3,7 @@ package byow.TileEngine;
 public class Player {
     private int x;
     private int y;
+    private int keysCollected;
     private TETile sittingOn;
 
     public Player(int randX, int randY) {
@@ -29,5 +30,13 @@ public class Player {
     public void setXY(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public int getNumKeysCollected() {
+        return keysCollected;
+    }
+
+    public void keyCollected() {
+        keysCollected++;
     }
 }

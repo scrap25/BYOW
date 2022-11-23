@@ -17,6 +17,7 @@ import java.awt.Color;
  */
 
 public class Tileset {
+    public static final TETile KEY = new TETile('钥', Color.YELLOW, Color.black, "key");
     public static final TETile AVATAR = new TETile('@', Color.white, Color.black, "you");
 
     public static final TETile PLAYER = new TETile('♖', Color.CYAN, Color.black, "player");
