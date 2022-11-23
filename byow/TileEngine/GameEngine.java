@@ -16,6 +16,7 @@ public class GameEngine {
     private WorldHandler worldHandler;
 
     private GameLoader gameLoader;
+    private boolean stopMusic;
 
     public void setupFrame() {
         StdDraw.setCanvasSize(WIDTH * 16, HEIGHT * 16);//canvas size
@@ -28,7 +29,7 @@ public class GameEngine {
     }
 
     public void startGameLoop(Long seed, boolean render) {
-        new Thread(() -> StdAudio.play(StdAudio.read("byow/game.wav"))).start();
+        playInBackground("start.wav");
 
         gameLoader = new GameLoader();
         char menuSelection = getMenuSelection();
@@ -67,6 +68,8 @@ public class GameEngine {
             default:
                 throw new RuntimeException("Invalid menu option.");
         }
+
+        playInBackground("game.wav");
 
         if (render) {
             worldHandler.renderWorld();
@@ -113,6 +116,32 @@ public class GameEngine {
                     drawHeadsUpDisplay(tileDesc + "     Keys collected: " + worldHandler.getKeysCollected());
                     worldChanged = false;
                 }
+            }
+        }
+    }
+
+    private void stopMusicInBackground() {
+        stopMusic = true;
+    }
+    private void playInBackground(String fileName) {
+        stopMusicInBackground();
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        stopMusic = false;
+        Thread musicThread = new Thread(() -> runMusic("byow/music/" + fileName));
+        musicThread.start();
+    }
+
+    private void runMusic(String fileName) {
+        double[] allBytes = StdAudio.read(fileName);
+        int segmentSize = 1;
+        for (int i = 0; i < allBytes.length; i+=segmentSize) {
+            StdAudio.play(allBytes[i]);
+            if (stopMusic) {
+                return;
             }
         }
     }
