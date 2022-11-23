@@ -1,5 +1,6 @@
 package byow.TileEngine;
 
+import edu.princeton.cs.algs4.StdAudio;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.*;
@@ -27,6 +28,8 @@ public class GameEngine {
     }
 
     public void startGameLoop(Long seed, boolean render) {
+        new Thread(() -> StdAudio.play(StdAudio.read("byow/game.wav"))).start();
+
         gameLoader = new GameLoader();
         char menuSelection = getMenuSelection();
         switch (menuSelection) {
