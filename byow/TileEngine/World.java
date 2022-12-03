@@ -331,7 +331,7 @@ public class World {
     }
 
     private boolean inVisibleRange(int x, int y) {
-        int visibleRange = 2;
+        int visibleRange = player.getVisibleRange();
         return x >= player.getX() - visibleRange &&
                 x <= player.getX() + visibleRange &&
                 y >= player.getY() - visibleRange &&
@@ -398,6 +398,7 @@ public class World {
         player.setXY(newX, newY);
         player.setSittingOn(world[newX][newY].getTETile());
         world[newX][newY].makePlayer();
+        player.madeMove();
     }
 
     public String getTileDescAt(int x, int y) {

@@ -5,6 +5,8 @@ public class Player {
     private int y;
     private int keysCollected;
     private TETile sittingOn;
+    private int visibileRange = 1;
+    private int moves;
 
     public Player(int randX, int randY) {
         x = randX;
@@ -38,5 +40,16 @@ public class Player {
 
     public void keyCollected() {
         keysCollected++;
+    }
+
+    public void madeMove() {
+        moves++;
+        if (moves % 10 == 0) {
+            visibileRange++;
+        }
+    }
+
+    public int getVisibleRange() {
+        return visibileRange;
     }
 }
