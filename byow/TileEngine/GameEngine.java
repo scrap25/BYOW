@@ -153,7 +153,7 @@ public class GameEngine {
         Font fontBig = new Font("Monaco", Font.BOLD, 30);
 
         StdDraw.setFont(fontBig);
-        StdDraw.text(WIDTH / 2, 4 * HEIGHT / 5, "Please choose menu option: ");
+        StdDraw.text(WIDTH / 2, 3.7 * HEIGHT / 5, "Please choose menu option: ");
         StdDraw.text(WIDTH / 2, 3 * HEIGHT / 5, "New Game (N)");
         StdDraw.text(WIDTH / 2, 2 * HEIGHT / 5, "Load Game (L)");
         StdDraw.text(WIDTH / 2, 1 * HEIGHT / 5, "Quit Game (Q)");
