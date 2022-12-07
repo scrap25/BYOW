@@ -149,6 +149,7 @@ public class GameEngine {
     private Character getMenuSelection() {
         StdDraw.clear(Color.BLACK);//background
         StdDraw.setPenColor(Color.orange);//color of words
+        StdDraw.picture(WIDTH/2,HEIGHT/2,"./byow/pic/61bstaff.png",WIDTH,HEIGHT);
         Font fontBig = new Font("Monaco", Font.BOLD, 30);
 
         StdDraw.setFont(fontBig);
