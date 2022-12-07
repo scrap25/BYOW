@@ -25,7 +25,7 @@ public class Tileset {
     public static final TETile PLAYER = new TETile('♖', Color.CYAN, Color.black, "player");
 
 //    public static final TETile WALL = new TETile('#', new Color(216, 128, 128), Color.darkGray, "wall");
-    public static final TETile WALL = new TETile('v', new Color(0, 0, 0), new Color(0, 16, 25), "broccoli", "./byow/TileEngine/images/hug.png");
+    public static final TETile WALL = new TETile('v', new Color(0, 0, 0), new Color(0, 16, 25), "hugwall", "./byow/TileEngine/images/hug.png");
 
     public static final TETile FLOOR = new TETile('·', new Color(128, 192, 128), Color.black,
             "floor");
