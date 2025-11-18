@@ -15,7 +15,7 @@ public class Main {
             Engine engine = new Engine();
             TETile[][] worldAsTETile = engine.interactWithInputString(args[1]);
             System.out.println(worldAsTETile.length + " by " + worldAsTETile[0].length + " size world.");
-            System.out.println(engine.toString());
+            System.out.println(engine);
         } else {
             Engine engine = new Engine();
             engine.interactWithKeyboard();
